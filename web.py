@@ -170,7 +170,7 @@ def post_thread(reddit_api, tweet):
     twitter_posts.remove(str(tweet['handle']))
     subreddit = reddit_api.subreddit(subreddit_str)
     print "subreddit obtained: ", subreddit, "\n"
-    print subreddit.submit(post, url=post_url), "\n" #(_data=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
+    result = subreddit.submit(post, url=post_url), "\n" #(_data=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
     print "submission result: ", str(result)
 
 
@@ -251,4 +251,4 @@ signal.signal(signal.SIGALRM, signal_post_handler)
 
 
 
-app.run(debug = True)
+app.run(host='0.0.0.0', debug = True)
