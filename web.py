@@ -170,6 +170,11 @@ def post_thread(reddit_api, tweet):
     twitter_posts.remove(str(tweet['handle']))
     subreddit = reddit_api.subreddit(subreddit_str)
     print "subreddit obtained: ", subreddit, "\n"
+    for submission in reddit_api.subreddit('worldnews').hot(limit=10):
+        print submission.title
+        print submission.score
+        print submission.id
+        print submission.url
     result = subreddit.submit(post, url=post_url), "\n" #(_data=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
     print "submission result: ", str(result)
 
