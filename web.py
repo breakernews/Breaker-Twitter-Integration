@@ -193,9 +193,11 @@ def main():
     twitter_handles = {}
     # load twitter handles from json
     with open(defaults) as twitter_handles_src:
+        print ("filepath=" + twitter_handles_src)
         t_handles_json_root = json.load(twitter_handles_src)
         handle_list = t_handles_json_root[handle_list_key]
         handle = [item['handle'] for item in handle_list]
+        print ("halndle = " + handle)
         # convert to dictionary to pass to ParallelSBTree
         for i in range(0, len(handle_list)):    # as dicionary
         	twitter_handles[str(handle[i])] = {"handle":str(handle[i]), "name": handle_list[i]['name'], "max_id" : handle_list[i]['max_id']}
