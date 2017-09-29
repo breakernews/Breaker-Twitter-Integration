@@ -1,15 +1,15 @@
 {
-  "name": "Start on Heroku: Python",
-  "description": "A barebones Python app, which can easily be deployed to Heroku.",
+  "name": "tweet2reddit",
+  "description": "Based on freecaykes/retoast",
   "image": "heroku/python",
-  "repository": "https://github.com/heroku/python-getting-started",
-  "keywords": ["python", "django" ],
+  "repository": "",
+  "keywords": ["python" ],
   "addons": [ "heroku-postgresql" ],
   "environments": {
     "test": {
       "scripts": {
-        "test-setup": "python manage.py collectstatic --noinput",
-        "test": "python manage.py test"
+        "test-setup": "python retoast.py",
+        "test": "python retoast.py test"
       }
     }
   }
