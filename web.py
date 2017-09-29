@@ -130,6 +130,7 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
     except OAuthException:
         print error.AUTH_ERROR
 
+    print "reddit api setup ok:", reddit_api, "\n" 
     return reddit_api
 
 
