@@ -9,6 +9,7 @@ tweepy = "*"
 flask = "*"
 gunicorn = "*"
 selenium = "*"
+bintrees = "*"
 
 [requires]
 python_version = "2.7"

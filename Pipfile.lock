@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d847456a6f6f409644a6dbc340d881f81fbc2146a32499de9bdf133ca7ccbb02"
+            "sha256": "3553113e55e0672d40c9272062062571376f96b77ebb4f856d3ee40aa3a2d1ce"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -28,6 +28,18 @@
         ]
     },
     "default": {
+        "bintrees": {
+            "hashes": [
+                "sha256:730ed144319c82edff3b4d151a70aae7371054e1f3bfed4d44db87ccbebe8c7f",
+                "sha256:3270aa3d541906382d823eb4406bf3b9ad5d2731c12c58f22cb2e12475addb90",
+                "sha256:94e604f709151d0e678e06baa269fc748ae48667678ec23eb2b6704d743aa34f",
+                "sha256:4188dcc69397b2513aef1ece1b3ea99e0663c75ed7bee7814f671a462819fd31",
+                "sha256:18f552b1e41d0d2ad0d9e384caebc617ea676359901704ae475c922bd85d7fad",
+                "sha256:70f1a1621850a614cea3c24bda0d54e63c46dd30243206764e23748a75eedd61",
+                "sha256:60675e6602cef094abcd38bf4aecc067d78ae2d5e1645615c789724542d11270"
+            ],
+            "version": "==2.0.7"
+        },
         "certifi": {
             "hashes": [
                 "sha256:54a07c09c586b0e4c619f02a5e94e36619da8e2b053e20f594348c0611803704",
