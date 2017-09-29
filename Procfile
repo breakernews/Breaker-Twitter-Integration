@@ -1,1 +1,1 @@
-web: gunicorn retoast.py --log-file -
+web: gunicorn web.py --log-file -
