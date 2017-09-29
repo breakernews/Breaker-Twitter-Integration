@@ -163,12 +163,12 @@ def post_thread(reddit_api, tweet):
 
     post_url = tweet['url']
 
-    print post, tweet['url'], "\n"
+    print post, tweet['url'], tweet['name'], "\n"
     # subreddit_submission = reddit_api.submission(reddit_api, url=tweet['url'], _data=post)
     twitter_posts.remove(str(tweet['handle']))
-    subreddit = reddit_api.subreddit(display_name=subreddit_str)
-    print "subreddit obtained!"
-    subreddit.submit(self=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
+    subreddit = reddit_api.subreddit(subreddit_str)
+    print "subreddit obtained: ", subreddit, "\n"
+    subreddit.submit()#_data=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
 
 
 #
