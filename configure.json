@@ -8,7 +8,7 @@
   "TWITTER_CONSUMER_SECRET": "iVP3RfdbyuuXn51YNrRVIZEhuY45GF2NknknS3UWaAFpNzIX9z",
   "REDDIT_USERNAME": "",
   "REDDIT_PASSWORD": "",
-  "REDDIT_USER_AGENT": "",
+  "REDDIT_USER_AGENT": "Mozilla",
   "TWITTER_CONSUMER_KEY": "LWCZp48evklE0cjewPVT7pGag",
   "SUBREDDIT":"r/newstweetfeed",
   "HANDLE_LIST_KEY": "NBA_Correspondents"
