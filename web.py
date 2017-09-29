@@ -166,7 +166,7 @@ def post_thread(reddit_api, tweet):
     print post, tweet['url'], "\n"
     # subreddit_submission = reddit_api.submission(reddit_api, url=tweet['url'], _data=post)
     twitter_posts.remove(str(tweet['handle']))
-    reddit_api.subreddit(subreddit_str).submit(post, url=post_url)
+    reddit_api.subreddit(subreddit_str).submit(title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
 
 
 #
@@ -196,56 +196,54 @@ def load_twitter_handles(src):
 def signal_post_handler(signum, stack):
      twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
 
-def main():
-    global handles_in_a_tree
-    global handle_list_key, subreddit_str
+#def main():
+global handles_in_a_tree
+global handle_list_key, subreddit_str
 
-    # account configuration
-    configure_src = open(configuration)
-    # twitter creds
-    configure_root = json.load(configure_src)
-    TWITTER_CONSUMER_KEY = configure_root["TWITTER_CONSUMER_KEY"]
-    TWITTER_CONSUMER_SECRET = configure_root["TWITTER_CONSUMER_SECRET"]
-    TWITTER_ACCESS_TOKEN = configure_root["TWITTER_ACCESS_TOKEN"]
-    TWITTER_ACCESS_KEY = configure_root["TWITTER_ACCESS_KEY"]
+# account configuration
+configure_src = open(configuration)
+# twitter creds
+configure_root = json.load(configure_src)
+TWITTER_CONSUMER_KEY = configure_root["TWITTER_CONSUMER_KEY"]
+TWITTER_CONSUMER_SECRET = configure_root["TWITTER_CONSUMER_SECRET"]
+TWITTER_ACCESS_TOKEN = configure_root["TWITTER_ACCESS_TOKEN"]
+TWITTER_ACCESS_KEY = configure_root["TWITTER_ACCESS_KEY"]
 
-    username = configure_root["TWITTER_USER"]
-    password = configure_root["TWITTER_PASS"]
-    # reddit creds
-    REDDIT_CLIENT_ID = configure_root["REDDIT_CLIENT_ID"]
-    REDDIT_CLIENT_SECRET = configure_root["REDDIT_CLIENT_SECRET"]
-    REDDIT_PASSWORD = configure_root["REDDIT_PASSWORD"]
-    REDDIT_USER_AGENT = configure_root["REDDIT_USER_AGENT"]
-    REDDIT_USERNAME = configure_root["REDDIT_USERNAME"]
-    handle_list_key = configure_root["HANDLE_LIST_KEY"]
-    subreddit_str = configure_root["SUBREDDIT"]
+username = configure_root["TWITTER_USER"]
+password = configure_root["TWITTER_PASS"]
+# reddit creds
+REDDIT_CLIENT_ID = configure_root["REDDIT_CLIENT_ID"]
+REDDIT_CLIENT_SECRET = configure_root["REDDIT_CLIENT_SECRET"]
+REDDIT_PASSWORD = configure_root["REDDIT_PASSWORD"]
+REDDIT_USER_AGENT = configure_root["REDDIT_USER_AGENT"]
+REDDIT_USERNAME = configure_root["REDDIT_USERNAME"]
+handle_list_key = configure_root["HANDLE_LIST_KEY"]
+subreddit_str = configure_root["SUBREDDIT"]
 
-    twitter_handles = {}
-    # load twitter handles from json
-    with open(defaults) as twitter_handles_src:
-        t_handles_json_root = json.load(twitter_handles_src)
-        handle_list = t_handles_json_root[handle_list_key]
-        handle = [item['handle'] for item in handle_list]
-        print "handle_list=" + str(handle_list)
-        print "halndle = " + str(handle)
-        # convert to dictionary to pass to ParallelSBTree
-        for i in range(0, len(handle_list)):    # as dicionary
-        	twitter_handles[str(handle[i])] = {"handle":str(handle[i]), "name": handle_list[i]['name'], "max_id" : handle_list[i]['max_id']}
+twitter_handles = {}
+# load twitter handles from json
+with open(defaults) as twitter_handles_src:
+    t_handles_json_root = json.load(twitter_handles_src)
+    handle_list = t_handles_json_root[handle_list_key]
+    handle = [item['handle'] for item in handle_list]
+    print "handle_list=" + str(handle_list)
+    print "halndle = " + str(handle)
+    # convert to dictionary to pass to ParallelSBTree
+    for i in range(0, len(handle_list)):    # as dicionary
+    	twitter_handles[str(handle[i])] = {"handle":str(handle[i]), "name": handle_list[i]['name'], "max_id" : handle_list[i]['max_id']}
 
-    twitter_api = setup_twitter_api(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_KEY, username, password)
-    reddit_api = setup_reddit_api(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_PASSWORD, REDDIT_USER_AGENT, REDDIT_USERNAME)
+twitter_api = setup_twitter_api(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_KEY, username, password)
+reddit_api = setup_reddit_api(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_PASSWORD, REDDIT_USER_AGENT, REDDIT_USERNAME)
 
-    twitter_posts.shared = reddit_api
-    handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
+twitter_posts.shared = reddit_api
+handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
 
-    signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
-    # attach post to  signal.SIGALARM
-    signal.signal(signal.SIGALRM, signal_post_handler)
+signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
+# attach post to  signal.SIGALARM
+signal.signal(signal.SIGALRM, signal_post_handler)
 
-    # web interface
+# web interface
 
 
 
-if __name__ == '__main__':
-    main()
-    app.run(debug = True)
+app.run(debug = True)
