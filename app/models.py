@@ -15,3 +15,15 @@ class Tweet(db.Model):
 
 	def __repr__(self):
 		return self.tweet_id
+
+
+class Handles(db.Model):
+	__tablename__ = 'tweethandles'
+	id = db.Column(db.Integer, primary_key=True)
+	tweet_handle = db.Column(db.String(100), unique=True)
+
+	def __init__(self, tweet_handle=None):
+		self.tweet_handle = tweet_handle
+
+	def __repr__(self):
+		return self.tweet_handle
