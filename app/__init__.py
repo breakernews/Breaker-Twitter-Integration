@@ -218,9 +218,9 @@ twitter_posts.shared = reddit_api
 handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
 
 #temporary shut it down
-# signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
+signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
 # attach post to  signal.SIGALARM
-# signal.signal(signal.SIGALRM, signal_post_handler)
+signal.signal(signal.SIGALRM, signal_post_handler)
 
 # web interface
 app.wsgi_app = ProxyFix(app.wsgi_app)
