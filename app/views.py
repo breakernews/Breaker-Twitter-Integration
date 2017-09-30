@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from flask import Flask
-from app import app, defaults, 
+from app import app, defaults
 
 #auth stuff
 def check_auth(username, password):
