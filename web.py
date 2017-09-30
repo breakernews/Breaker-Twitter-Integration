@@ -196,8 +196,8 @@ def signal_post_handler(signum, stack):
      twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
 
 #def main():
-global handles_in_a_tree
-global handle_list_key, subreddit_str
+# global handles_in_a_tree
+# global handle_list_key, subreddit_str
 
 # account configuration
 configure_src = open(configuration)
