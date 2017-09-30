@@ -12,6 +12,7 @@ bintrees = "*"
 "python-oauth2" = "*"
 sqlalchemy = "*"
 flask = "*"
+"flask-sqlalchemy" = "*"
 
 [requires]
 python_version = "2.7"
