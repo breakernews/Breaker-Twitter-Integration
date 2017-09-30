@@ -1,7 +1,6 @@
 {
   "NBA_Correspondents": [
-    {"handle": "WojVerticalNBA", "name":"WOJNAROWSKI", "max_id":0 },
-    {"handle": "ZachLowe_NBA", "name":"LOWE", "max_id":0},
-    {"handle":"SeanCunningham", "name":"CUNNINGHAM", "max_id":0}
+    {"handle": "techcrunch", "name":"techcrunch acc", "max_id":0 },
+    {"handle": "business", "name":"business acc", "max_id":0},
   ]
 }
