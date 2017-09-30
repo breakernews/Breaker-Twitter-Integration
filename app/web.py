@@ -34,8 +34,8 @@ app = Flask(__name__)
 
 twitter_posts = ParallelSBTree({})
 handles_in_a_tree = ParallelSBTree({})
-defaults = "./twitter_handles.json"
-configuration  = "./configure.json"
+defaults = "./app/twitter_handles.json"
+configuration  = "./app/configure.json"
 
 handle_list_key = ""
 subreddit_str = ""
