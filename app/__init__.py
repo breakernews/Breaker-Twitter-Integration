@@ -83,7 +83,7 @@ def requires_auth(f):
 def index():
 	global defaults
 	with open(defaults) as twitter_handles_src:
-		return render_template("./app/index.html", json=json.load(twitter_handles_src))
+		return render_template("./app/templates/index.html", json=json.load(twitter_handles_src))
 
 
 @app.route("/save", methods=['POST'])
