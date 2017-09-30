@@ -161,7 +161,7 @@ def post_thread(reddit_api, tweet):
 
     post_url = tweet['url']
 
-    print post, post_url, tweet['name'], "\n"
+    print "attempt to submit this: ", post, post_url, tweet['name'], "\n"
     # subreddit_submission = reddit_api.submission(reddit_api, url=tweet['url'], _data=post)
     result = reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" #(_data=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
     print "submission result: ", str(result)
