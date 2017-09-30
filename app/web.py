@@ -16,6 +16,7 @@ import json
 import string
 import signal
 from threading import Timer
+from werkzeug.contrib.fixers import ProxyFix
 
 import praw
 import tweepy
@@ -30,7 +31,13 @@ from functools import wraps
 from flask import request, Response
 
 app = Flask(__name__)
-
+# def app(environ, start_response):
+#     data = b"Hello, World!\n"
+#         start_response("200 OK", [
+#             ("Content-Type", "text/plain"),
+#             ("Content-Length", str(len(data)))
+#         ])
+#         return iter([data])
 
 twitter_posts = ParallelSBTree({})
 handles_in_a_tree = ParallelSBTree({})
@@ -84,6 +91,8 @@ def index():
 def save_json():
 	return "Not finished yet"
 
+
+
 #
 # write to json file in file_src
 #
@@ -130,6 +139,18 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
     print "authorized as: ", reddit_api.user.me()
     return reddit_api
 
+#
+# check storage if we have posted this tweet already
+#
+def tweet_exists(tweet_id):
+    return True
+
+#
+#  stores new tweet in a storage
+#
+def store_tweet(tweet_id):
+    return True
+
 
 #
 # fetch twitter top tweet from account
@@ -144,9 +165,11 @@ def get_tweet(twitter_api, account):
     if recent_user_tweet.id > int( str(account['max_id']) ):
         tweet_url = twitter_url + str(account['handle']) + "/status/"  + str(recent_user_tweet.id)
         # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['handle'])), { "name" : str(account['name']), "url":tweet_url, "content" : recent_user_tweet.text})
-        twitter_posts.insert( str(account['handle']), { "handle" : str(account['handle']), "name" : str(account['name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
-        handles_in_a_tree.update_node(str(account['handle']), {"handle":str(account['handle']), "name": str(account['name']), "max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
-        # print twitter_handles
+        if not tweet_exists(recent_user_tweet.id):
+            twitter_posts.insert( str(account['handle']), { "handle" : str(account['handle']), "name" : str(account['name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
+            handles_in_a_tree.update_node(str(account['handle']), {"handle":str(account['handle']), "name": str(account['name']), "max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
+            store_tweet(recent_user_tweet.id)
+            # print twitter_handles
         signal.alarm(10)   # send signal to process tweet 10 seconds later
 
 #
@@ -160,11 +183,9 @@ def post_thread(reddit_api, tweet):
                         tp = str(tweet['content']) )
 
     post_url = tweet['url']
-
     print "attempt to submit this: ", post, post_url, tweet['name'], "\n"
     # subreddit_submission = reddit_api.submission(reddit_api, url=tweet['url'], _data=post)
-    result = reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" #(_data=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
-    print "submission result: ", str(result)
+    reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" #(_data=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
     twitter_posts.remove(str(tweet['handle']))
 
 
@@ -242,5 +263,6 @@ signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
 signal.signal(signal.SIGALRM, signal_post_handler)
 
 # web interface
-
-app.run(host='0.0.0.0', debug = True)
+app.wsgi_app = ProxyFix(app.wsgi_app)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug = True)
