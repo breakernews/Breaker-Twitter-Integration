@@ -27,7 +27,8 @@ from get_access_token import get_access_token
 from ParallelSBTree import ParallelSBTree
 
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 # def app(environ, start_response):
@@ -37,6 +38,7 @@ app = Flask(__name__)
 #             ("Content-Length", str(len(data)))
 #         ])
 #         return iter([data])
+print 
 db = SQLAlchemy(app)
 
 twitter_posts = ParallelSBTree({})
