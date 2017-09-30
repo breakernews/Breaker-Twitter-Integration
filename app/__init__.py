@@ -28,19 +28,9 @@ from ParallelSBTree import ParallelSBTree
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-# from app import config
-
 app = Flask(__name__)
-# app.config.from_object('test_config')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# def app(environ, start_response):
-#     data = b"Hello, World!\n"
-#         start_response("200 OK", [
-#             ("Content-Type", "text/plain"),
-#             ("Content-Length", str(len(data)))
-#         ])
-#         return iter([data])
 db = SQLAlchemy(app)
 
 twitter_posts = ParallelSBTree({})
@@ -107,12 +97,17 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
 # check storage if we have posted this tweet already
 #
 def tweet_exists(tweet_id):
+    result = Tweet.find(tweet_id)
+    print "tweet lookup result: ", result
     return True
 
 #
 #  stores new tweet in a storage
 #
 def store_tweet(tweet_id):
+    tw = Tweet(tweet_id)
+    db.session.add(tw)
+    db.session.commit()
     return True
 
 
