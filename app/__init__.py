@@ -17,6 +17,7 @@ import string
 import signal
 from threading import Timer
 from werkzeug.contrib.fixers import ProxyFix
+from app import config
 
 import praw
 import tweepy
