@@ -28,10 +28,12 @@ from ParallelSBTree import ParallelSBTree
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from app import config
+# from app import config
 
 app = Flask(__name__)
-app.config.from_object('config')
+# app.config.from_object('test_config')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # def app(environ, start_response):
 #     data = b"Hello, World!\n"
 #         start_response("200 OK", [
@@ -39,7 +41,6 @@ app.config.from_object('config')
 #             ("Content-Length", str(len(data)))
 #         ])
 #         return iter([data])
-print 
 db = SQLAlchemy(app)
 
 twitter_posts = ParallelSBTree({})
