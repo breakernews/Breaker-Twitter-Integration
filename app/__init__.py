@@ -17,7 +17,6 @@ import string
 import signal
 from threading import Timer
 from werkzeug.contrib.fixers import ProxyFix
-from app import config
 
 import praw
 import tweepy
@@ -31,6 +30,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
+app.config.from_object('config')
 # def app(environ, start_response):
 #     data = b"Hello, World!\n"
 #         start_response("200 OK", [
