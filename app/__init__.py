@@ -27,7 +27,6 @@ from ParallelSBTree import ParallelSBTree
 
 from flask import Flask
 from flask import render_template
-from functools import wraps
 from flask import request, Response
 
 app = Flask(__name__)
