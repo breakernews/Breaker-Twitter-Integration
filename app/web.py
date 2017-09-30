@@ -266,4 +266,4 @@ handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
 # web interface
 app.wsgi_app = ProxyFix(app.wsgi_app)
 # if __name__ == '__main__':
-app.run(host='0.0.0.0', debug = True)
+app.run(debug = True)
