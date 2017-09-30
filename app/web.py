@@ -264,5 +264,5 @@ signal.signal(signal.SIGALRM, signal_post_handler)
 
 # web interface
 app.wsgi_app = ProxyFix(app.wsgi_app)
-# if __name__ == '__main__':
-app.run(host='0.0.0.0', debug = True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug = True)
