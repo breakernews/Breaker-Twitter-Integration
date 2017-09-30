@@ -123,14 +123,11 @@ def setup_twitter_api(consumer_key, consumer_secret, access_token, access_key, u
 #
 def setup_reddit_api(client_id, client_secret, password, user_agent, username):
     reddit_api = None
-    try:
-        reddit_api = praw.Reddit(client_id=client_id, client_secret=client_secret,
-                         password=password, user_agent=user_agent,
-                         username=username)
-    except OAuthException:
-        print error.AUTH_ERROR
-
+    reddit_api = praw.Reddit(client_id=REDDIT_CLIENT_ID, client_secret=REDDIT_CLIENT_SECRET,
+                         password=REDDIT_PASSWORD, username=REDDIT_USERNAME,
+                         user_agent=REDDIT_USER_AGENT)
     print "reddit api setup ok:", reddit_api, "\n" 
+    print "authorized as: ", reddit_api.user.me()
     return reddit_api
 
 
@@ -169,11 +166,6 @@ def post_thread(reddit_api, tweet):
     print "attempting to obtain subreddit named ", subreddit_str
     subreddit = reddit_api.subreddit(subreddit_str)
     print "subreddit obtained: ", subreddit, "\n"
-    for submission in reddit_api.subreddit('worldnews').hot(limit=10):
-        print submission.title
-        print submission.score
-        print submission.id
-        print submission.url
     result = subreddit.submit(post, url=post_url), "\n" #(_data=post,title="[{th}]".format(th=str(tweet['name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
     print "submission result: ", str(result)
     twitter_posts.remove(str(tweet['handle']))
