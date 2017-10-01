@@ -50,7 +50,7 @@ def index():
 def save_json():
 	temp = request.get_json(force=True)
 	print temp
-	print temp['tweet_handle']
+	print temp[0]
 	h = json.load(temp)
 	db.session.query(Handles).delete()
 	for _h in h:
