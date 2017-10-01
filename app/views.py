@@ -3,9 +3,8 @@ import os
 import sys
 import json
 import string
-from flask import Flask
-from flask import render_template
-from flask import request, Response
+from flask import Flask, render_template, request, Response
+from flask_json import FlaskJSON, JsonError, json_response, as_json
 from functools import wraps
 from app import app, defaults, db, models
 from models import *
@@ -49,8 +48,9 @@ def index():
 @app.route("/save", methods=['POST'])
 @requires_auth
 def save_json():
-	temp = request.get_json()
+	temp = request.get_json(force=True)
 	print temp
+	print temp['tweet_handle']
 	h = json.load(temp)
 	db.session.query(Handles).delete()
 	for _h in h:
@@ -59,3 +59,4 @@ def save_json():
 	return "Saved!"
 
 
+t = "[{tweet_max_id: 'None', tweet_name: 'business acc', tweet_handle: 'business'}]"
