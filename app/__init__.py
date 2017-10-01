@@ -29,8 +29,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_json import FlaskJSON, JsonError, json_response, as_json 
 
-from app import views, models
-
 app = Flask(__name__)
 FLjson = FlaskJSON(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
@@ -241,3 +239,4 @@ signal.signal(signal.SIGALRM, signal_post_handler)
 
 # web interface
 app.wsgi_app = ProxyFix(app.wsgi_app)
+from app import views, models
