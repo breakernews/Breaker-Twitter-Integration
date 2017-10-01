@@ -5,12 +5,12 @@
 <body>
 <table id="handles">
 	<tbody>
-		<th>
-			<td>handle</td>
-			<td>name</td>
-			<td>max_id</td>
-			<td>Remove</td>
-		</th>
+		<tr>
+			<th>handle</th>
+			<th>name</th>
+			<th>max_id</th>
+			<th>Remove</th>
+		</tr>
 		{% for item in handles %}
 		<tr class="item">
 			<td><input class="tweet_handle" type="text" value="{{ item.tweet_handle }}"></td>
@@ -28,6 +28,9 @@
 	$(document).ready(function() {
 		$('#add').click(function() {
 			$('#handles > tbody:last-child').append('<tr class="item"><td><input class="tweet_handle" type="text" value=""></td><td><input class="tweet_name" type="text" value=""</td><td><input class="tweet_max_id" type="text" value=""</td><td><a href="#" class="remove">Remove</a></td></tr>');
+		})
+		$('.remove').click(function() {
+			console.log(this);
 		})
 	})
 </script>
