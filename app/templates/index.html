@@ -4,7 +4,6 @@
 	<title>Twitter2Reddit Bot Setup</title>
 </head>
 <body>
-	{{handles}}
 <table id="handles">
 	<tbody>
 		<tr>
@@ -42,7 +41,7 @@
 		}
 
 		var save_callback = function (data, textStatus, jqXHR) {
-			
+			alert(data);
 		}
 
 		$('#add').click(function() {
@@ -69,7 +68,7 @@
 			});
 			// Let's put this in the object like you want and convert to JSON (Note: jQuery will also do this for you on the Ajax request)
 			// alert(JSON.stringify(_Handles));​
-			jQuery.post("/save", _Handles, save_callback);
+			jQuery.ajax({url: "/save", method:"POST", data: JSON.stringify(_Handles), dataType: "json", contentType: "application/json; charset=utf-8", success: save_callback});
 		})
 
 	})
