@@ -80,28 +80,6 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
     return reddit_api
 
 #
-# check storage if we have posted this tweet already
-#
-def tweet_exists(tweet_id):
-    result = None
-    result = Tweet.query.filter_by(tweet_id=str(tweet_id)).all()
-    print "tweet lookup result: ", result
-    if len(result) > 0:
-        return True
-    else:
-        return False
-
-#
-#  stores new tweet in a storage
-#
-def store_tweet(tweet_id):
-    tw = Tweet(tweet_id=str(tweet_id))
-    db.session.add(tw)
-    db.session.commit()
-    return True
-
-
-#
 # fetch twitter top tweet from account
 #
 def get_tweet(twitter_api, account):
@@ -114,11 +92,10 @@ def get_tweet(twitter_api, account):
     if recent_user_tweet.id > int( str(account['tweet_max_id']) ):
         tweet_url = twitter_url + str(account['tweet_handle']) + "/status/"  + str(recent_user_tweet.id)
         # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['tweet_handle'])), { "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text})
-        if not tweet_exists(recent_user_tweet.id):
-            twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
-            handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "name": str(account['tweet_name']), "max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
-            store_tweet(recent_user_tweet.id)
-            # print twitter_handles
+        # temporary turn it off
+        #twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
+        handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
+        # print twitter_handles
         signal.alarm(10)   # send signal to process tweet 10 seconds later
 
 #
@@ -133,8 +110,7 @@ def post_thread(reddit_api, tweet):
 
     post_url = tweet['url']
     print "attempt to submit this: ", post, post_url, tweet['tweet_name'], "\n"
-    # subreddit_submission = reddit_api.submission(reddit_api, url=tweet['url'], _data=post)
-    reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" #(_data=post,title="[{th}]".format(th=str(tweet['tweet_name'])), selftext="[{tp}]".format(tp=str(tweet['content'])), url=post_url)
+    reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
     twitter_posts.remove(str(tweet['tweet_handle']))
 
 
@@ -152,10 +128,6 @@ def signal_get_handler(twitter_api, handles_in_a_tree, interval):
 def signal_post_handler(signum, stack):
      twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
 
-#def main():
-# global handles_in_a_tree
-# global handle_list_key, subreddit_str
-
 # account configuration
 configure_src = open(configuration)
 # twitter creds
@@ -164,7 +136,6 @@ TWITTER_CONSUMER_KEY = configure_root["TWITTER_CONSUMER_KEY"]
 TWITTER_CONSUMER_SECRET = configure_root["TWITTER_CONSUMER_SECRET"]
 TWITTER_ACCESS_TOKEN = configure_root["TWITTER_ACCESS_TOKEN"]
 TWITTER_ACCESS_KEY = configure_root["TWITTER_ACCESS_KEY"]
-
 username = configure_root["TWITTER_USER"]
 password = configure_root["TWITTER_PASS"]
 # reddit creds
@@ -176,28 +147,10 @@ REDDIT_USERNAME = configure_root["REDDIT_USERNAME"]
 handle_list_key = configure_root["HANDLE_LIST_KEY"]
 subreddit_str = configure_root["SUBREDDIT"]
 
+#load twitter handles from db
 twitter_handles = {}
-# load twitter handles from json
-# with open(defaults) as twitter_handles_src:
-#     t_handles_json_root = json.load(twitter_handles_src)
-#     handle_list = t_handles_json_root[handle_list_key]
-#     handle = [item['tweet_handle'] for item in handle_list]
-#     print "handle_list=" + str(handle_list)
-#     print "halndle = " + str(handle)
-#     # convert to dictionary to pass to ParallelSBTree
-#     for i in range(0, len(handle_list)):    # as dicionary
-#     	twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
-
-from models import Handles
 handle_list = Handles.query.all()
 print handle_list
-# handle = [item['tweet_handle'] for item in handle_list]
-# print "handle_list=" + str(handle_list)
-# print "handle = " + str(handle)
-# # convert to dictionary to pass to ParallelSBTree
-# for i in range(0, len(handle_list)):    # as dicionary
-#   twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
-
 for i in range(len(handle_list)):
 	twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': handle_list[i].tweet_max_id }
 print twitter_handles
@@ -208,7 +161,6 @@ reddit_api = setup_reddit_api(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_PAS
 twitter_posts.shared = reddit_api
 handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
 
-#temporary shut it down
 signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
 # attach post to  signal.SIGALARM
 signal.signal(signal.SIGALRM, signal_post_handler)
