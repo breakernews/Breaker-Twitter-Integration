@@ -40,10 +40,6 @@
 			$(this).parent().parent().remove();
 		}
 
-		var save_callback = function (data, textStatus, jqXHR) {
-			alert(data);
-		}
-
 		$('#add').click(function() {
 			$('#handles > tbody:last-child').append(
 				'<tr class="item">'+
@@ -68,7 +64,10 @@
 			});
 			// Let's put this in the object like you want and convert to JSON (Note: jQuery will also do this for you on the Ajax request)
 			// alert(JSON.stringify(_Handles));​
-			jQuery.ajax({url: "/save", method:"POST", data: JSON.stringify(_Handles), dataType: "json", contentType: "application/json; charset=utf-8", success: save_callback});
+			jQuery.ajax({url: "/save", method:"POST", data: JSON.stringify(_Handles), dataType: "json", contentType: "application/json; charset=utf-8", success: save_callback})
+			.done (function (data) {
+					alert(data);
+				});
 		})
 
 	})

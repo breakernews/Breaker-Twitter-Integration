@@ -42,9 +42,7 @@ def index():
 	handles = Handles.query.all()
 	return render_template("index.html", handles=handles)
 
-
-
-
+# saving the twitter handles from web admin interface
 @app.route("/save", methods=['POST'])
 @requires_auth
 def save_json():
