@@ -98,7 +98,7 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
 #
 def tweet_exists(tweet_id):
     result = None
-    result = Tweet.query.filter_by(tweet_id=tweet_id).all()
+    result = Tweet.query.filter_by(tweet_id=str(tweet_id)).all()
     print "tweet lookup result: ", result
     if len(result) > 0:
         return True
