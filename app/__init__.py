@@ -71,7 +71,7 @@ def setup_twitter_api(consumer_key, consumer_secret, access_token, access_key, u
         update_json(configuration, ["TWITTER_ACCESS_TOKEN", "TWITTER_ACCESS_KEY"], [access_token, access_key])
 
     twitter_api = None
-    try:    # authorize twitter, initialize tweepy
+    try:    # authorize twitter, initialize tweepy 
        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
        auth.set_access_token( access_token, access_key)
        twitter_api = tweepy.API(auth)
