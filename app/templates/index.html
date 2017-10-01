@@ -15,9 +15,9 @@
 		</tr>
 		{% for item in handles %}
 		<tr class="item">
-			<td><input class="tweet_handle" type="text" value="{{ item.tweet_handle }}" name="tweet_handle[]"></td>
-			<td><input class="tweet_name" type="text" value="{{ item.tweet_name }}" name="tweet_name[]"></td>
-			<td><input class="tweet_max_id" type="text" value="{{ item.tweet_max_id }}" name="tweet_max_id[]"></td>
+			<td><input class="tweet_handle" type="text" value="{{ item.tweet_handle }}" name="tweet_handle"></td>
+			<td><input class="tweet_name" type="text" value="{{ item.tweet_name }}" name="tweet_name"></td>
+			<td><input class="tweet_max_id" type="text" value="{{ item.tweet_max_id }}" name="tweet_max_id"></td>
 			<td><a href="#" class="remove">Remove</a></td>
 		</tr>
 		{% endfor %}
@@ -41,16 +41,37 @@
 			$(this).parent().parent().remove();
 		}
 
+		var save_callback = function (data, textStatus, jqXHR) {
+			
+		}
+
 		$('#add').click(function() {
-			$('#handles > tbody:last-child').append('<tr class="item"><td><input class="tweet_handle" type="text" value=""></td><td><input class="tweet_name" type="text" value=""</td><td><input class="tweet_max_id" type="text" value=""</td><td><a href="#" class="remove">Remove</a></td></tr>');
+			$('#handles > tbody:last-child').append(
+				'<tr class="item">'+
+				'<td><input class="tweet_handle" type="text" value="" name="tweet_handle"></td>'+
+				'<td><input class="tweet_name" type="text" value="" name="tweet_name"></td>'+
+				'<td><input class="tweet_max_id" type="text" value="" name="tweet_max_id"></td>'+
+				'<td><a href="#" class="remove">Remove</a></td>'+
+				'</tr>');
+
 			$('.remove').click(remover)
 		})
 		$('.remove').click(remover);
 		$('#save').click(function (e) {
 			e.preventDefault();
-
-
+			var _Handles = [];
+			var $rows = $("tbody tr.item").each(function(index) {
+			  $cells = $(this).find("td input");
+			  _Handles[index] = {};
+			  $cells.each(function(cellIndex) {
+			    _Handles[index][this.name] = this.value;
+			  });    
+			});
+			// Let's put this in the object like you want and convert to JSON (Note: jQuery will also do this for you on the Ajax request)
+			// alert(JSON.stringify(_Handles));​
+			jQuery.post("/save", _Handles, save_callback);
 		})
+
 	})
 </script>
 </body>

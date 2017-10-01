@@ -49,4 +49,5 @@ def index():
 @app.route("/save", methods=['POST'])
 @requires_auth
 def save_json():
+	print request.get_json()
 	return "Not finished yet"
