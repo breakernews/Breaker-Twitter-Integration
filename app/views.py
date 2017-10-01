@@ -40,7 +40,7 @@ def requires_auth(f):
 @requires_auth
 def index():
 	global defaults
-	handles = db.Handles.all()
+	handles = Handles.all()
 	return render_template("index.html", handles=handles)
 
 
