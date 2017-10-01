@@ -18,6 +18,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_json import FlaskJSON, JsonError, json_response, as_json 
 
+from models import *
+
 twitter_posts = ParallelSBTree({})
 handles_in_a_tree = ParallelSBTree({})
 defaults = "./app/twitter_handles.json"

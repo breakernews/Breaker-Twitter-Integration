@@ -6,7 +6,7 @@ import string
 from flask import Flask, render_template, request, Response
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from functools import wraps
-from app import app, defaults, db, models
+from app import app, db, models
 from models import *
 
 #auth stuff
@@ -38,7 +38,6 @@ def requires_auth(f):
 @app.route("/index", methods=['GET'])
 @requires_auth
 def index():
-	global defaults
 	handles = Handles.query.all()
 	return render_template("index.html", handles=handles)
 
