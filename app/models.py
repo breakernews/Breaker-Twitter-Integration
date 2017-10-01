@@ -3,6 +3,7 @@
 from flask import Flask
 from functools import wraps
 from app import app, db
+from sqlalchemy.dialects.mysql import BIGINT
 
 class Handles(db.Model):
 	__tablename__ = 'tweethandles'
