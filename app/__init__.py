@@ -27,8 +27,6 @@ from ParallelSBTree import ParallelSBTree
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from app import views, models
-from models import *
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
@@ -226,3 +224,5 @@ signal.signal(signal.SIGALRM, signal_post_handler)
 
 # web interface
 app.wsgi_app = ProxyFix(app.wsgi_app)
+from app import views, models
+from models import *
