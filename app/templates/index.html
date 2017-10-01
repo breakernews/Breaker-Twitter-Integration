@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Twitter2Reddit Bot Setup</title>
 </head>
 <body>
 	{{handles}}
@@ -35,7 +36,7 @@
 <script>
 	$(document).ready(function() {
 
-		var remover = function() {
+		var remover = function(e) {
 			e.preventDefault();
 			$(this).parent().parent().remove();
 		}
