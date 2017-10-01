@@ -97,6 +97,9 @@ def get_tweet(twitter_api, account):
         handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
         for item in Handles.query.all():
         	if item.tweet_handle == account['tweet_handle']:
+        		print "updating handle ", item.tweet_handle
+        		print "current max_id value: ", item.tweet_max_id
+        		print "new max_id value: ", str(recent_user_tweet.id)
         		item.tweet_max_id = str(recent_user_tweet.id)
         		db.session.commit()
         # print twitter_handles

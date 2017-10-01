@@ -9,7 +9,7 @@ class Handles(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	tweet_handle = db.Column(db.String(100), unique=True)
 	tweet_name = db.Column(db.String(100), unique=False)
-	tweet_max_id = db.Column(db.String(50), unique=False)
+	tweet_max_id = db.Column(db.String(100), unique=False)
 
 	# def __init__(self, tweet_handle=None, tweet_name=None, tweet_max_id=None):
 	# 	self.tweet_handle = tweet_handle
