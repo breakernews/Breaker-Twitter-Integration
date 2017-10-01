@@ -32,7 +32,7 @@ twitter_url = "https://twitter.com/"
 GET_INTERVAL = 20  # 5 minutes avoid choosing too low of number - RateLimitError
 UTF_8 = 'utf-8'
 _timer = None
-lock = threading.RLock()
+lock = RLock()
 
 #
 # write to json file in file_src
