@@ -31,6 +31,7 @@ twitter_url = "https://twitter.com/"
 
 GET_INTERVAL = 20  # 5 minutes avoid choosing too low of number - RateLimitError
 UTF_8 = 'utf-8'
+_timer = None
 
 
 #
@@ -125,9 +126,14 @@ def post_thread(reddit_api, tweet):
 # calls the handler get_tweet every interval
 #
 def signal_get_handler(twitter_api, handles_in_a_tree, interval):
-     # check twitter every interval
-     handles_in_a_tree.foreach(get_tweet, handles_in_a_tree.psbt._root)
-     Timer(interval, signal_get_handler, args=[twitter_api, handles_in_a_tree, interval]).start()
+    # check twitter every interval
+    global _timer
+    handles_in_a_tree.foreach(get_tweet, handles_in_a_tree.psbt._root)
+    if _timer == None:
+        _timer = Timer(interval, signal_get_handler, args=[twitter_api, handles_in_a_tree, interval]).start()
+    else:
+        _time.stop()
+        _timer = Timer(interval, signal_get_handler, args=[twitter_api, handles_in_a_tree, interval]).start()
 
 #
 # attached to SIGALRM to get called
