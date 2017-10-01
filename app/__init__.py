@@ -29,6 +29,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_json import FlaskJSON, JsonError, json_response, as_json 
 
+from . import views, models
+from models import *
+
 app = Flask(__name__)
 FLjson = FlaskJSON(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
@@ -216,7 +219,7 @@ twitter_handles = {}
 #     # convert to dictionary to pass to ParallelSBTree
 #     for i in range(0, len(handle_list)):    # as dicionary
 #     	twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
-handle_list = models.Handles.query.all()
+handle_list = Handles.query.all()
 handle = [item['tweet_handle'] for item in handle_list]
 print "handle_list=" + str(handle_list)
 print "handle = " + str(handle)
@@ -239,4 +242,3 @@ signal.signal(signal.SIGALRM, signal_post_handler)
 
 # web interface
 app.wsgi_app = ProxyFix(app.wsgi_app)
-from app import views, models
