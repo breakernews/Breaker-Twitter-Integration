@@ -92,8 +92,8 @@ def get_tweet(twitter_api, account):
     if recent_user_tweet.id > int( str(account['tweet_max_id']) ):
         tweet_url = twitter_url + str(account['tweet_handle']) + "/status/"  + str(recent_user_tweet.id)
         # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['tweet_handle'])), { "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text})
-        handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
-        twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
+        handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "tweet_name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
+        twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "tweet_name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
         for item in Handles.query.all():
         	if item.tweet_handle == account['tweet_handle']:
         		print "updating handle ", item.tweet_handle
@@ -110,6 +110,7 @@ def get_tweet(twitter_api, account):
 def post_thread(reddit_api, tweet):
     global twitter_posts
     print "HIT"
+    print "tweet ", tweet
     post = "[{th}] {tp}".format(
                         th = str(tweet['tweet_name']),
                         tp = str(tweet['content']) )
