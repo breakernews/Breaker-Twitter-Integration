@@ -7,7 +7,7 @@ from flask import Flask
 from flask import render_template
 from flask import request, Response
 from functools import wraps
-from app import app, defaults
+from app import app, defaults, db
 
 #auth stuff
 def check_auth(username, password):
@@ -39,8 +39,10 @@ def requires_auth(f):
 @requires_auth
 def index():
 	global defaults
-	with open(defaults) as twitter_handles_src:
-		return render_template("index.html", json=json.load(twitter_handles_src))
+	handles = db.Handles.all()
+	return render_template("index.html", handles=handles)
+
+
 
 
 @app.route("/save", methods=['POST'])

@@ -3,8 +3,23 @@
 </head>
 <body>
 <form method="POST" action="/save">
-<textarea name="json" rows="15" cols="50">{{json}}</textarea><br>
+<textarea name="json" rows="15" cols="50"></textarea><br>
 <input type="submit" value="Save it"/>
 </form>
+
+<table>
+<th>
+	<td>handle</td>
+	<td>name</td>
+	<td>max_id</td>
+</th>
+{% for item in handles %}
+<tr>
+	<td>{{ item.tweet_handle }}</td>
+	<td>{{ item.tweet_name }}</td>
+	<td>{{ item.tweet_max_id }}</td>
+</tr>
+{% endfor %}
+</table>
 </body>
 </html>
