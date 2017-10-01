@@ -97,7 +97,7 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
 # check storage if we have posted this tweet already
 #
 def tweet_exists(tweet_id):
-    result = Tweet.find(tweet_id)
+    result = Tweet.query.filter_by(tweet_id=tweet_id)
     print "tweet lookup result: ", result
     return True
 
