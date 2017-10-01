@@ -32,7 +32,7 @@ twitter_url = "https://twitter.com/"
 GET_INTERVAL = 20  # 5 minutes avoid choosing too low of number - RateLimitError
 UTF_8 = 'utf-8'
 _timer = None
-
+lock = threading.Lock()
 
 #
 # write to json file in file_src
@@ -96,13 +96,13 @@ def get_tweet(twitter_api, account):
         handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "tweet_name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
         twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "tweet_name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
         for item in Handles.query.all():
-        	if item.tweet_handle == account['tweet_handle']:
+            if item.tweet_handle == account['tweet_handle']:
                 if recent_user_tweet.id > int(str(account['tweet_max_id']) ):
-            		print "updating handle ", item.tweet_handle
-            		print "current max_id value: ", item.tweet_max_id
-            		print "new max_id value: ", str(recent_user_tweet.id)
-            		item.tweet_max_id = str(recent_user_tweet.id)
-            		db.session.commit()
+                    print "updating handle ", item.tweet_handle
+                    print "current max_id value: ", item.tweet_max_id
+                    print "new max_id value: ", str(recent_user_tweet.id)
+                    item.tweet_max_id = str(recent_user_tweet.id)
+                    db.session.commit()
         # print twitter_handles
         signal.alarm(10)   # send signal to process tweet 10 seconds later
 
