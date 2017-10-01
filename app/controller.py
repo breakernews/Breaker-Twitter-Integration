@@ -147,6 +147,7 @@ def reload():
     global twitter_api
     handle_list = Handles.query.all()
     print handle_list
+    twitter_handles = {}
     for i in range(len(handle_list)):
         twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
     print twitter_handles
