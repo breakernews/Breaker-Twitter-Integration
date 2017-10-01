@@ -138,6 +138,7 @@ def signal_post_handler(signum, stack):
 def reload():
 	global twitter_handles
 	global handles_in_a_tree
+	global twitter_api
 	handle_list = Handles.query.all()
 	print handle_list
 	for i in range(len(handle_list)):
