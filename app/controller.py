@@ -154,7 +154,7 @@ def reload():
     signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
     # attach post to  signal.SIGALARM
     signal.signal(signal.SIGALRM, signal_post_handler)
-	return False
+    return False
 
 # account configuration
 configure_src = open(configuration)
