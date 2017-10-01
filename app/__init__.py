@@ -97,9 +97,13 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
 # check storage if we have posted this tweet already
 #
 def tweet_exists(tweet_id):
-    result = Tweet.query.filter_by(tweet_id=tweet_id)
+    result = None
+    result = Tweet.query.filter_by(tweet_id=tweet_id).all()
     print "tweet lookup result: ", result
-    return True
+    if len(result) > 0:
+        return True
+    else:
+        return False
 
 #
 #  stores new tweet in a storage
