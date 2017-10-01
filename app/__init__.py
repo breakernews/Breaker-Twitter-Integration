@@ -29,6 +29,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_json import FlaskJSON, JsonError, json_response, as_json 
 
+from .models inport *
+
 app = Flask(__name__)
 FLjson = FlaskJSON(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
