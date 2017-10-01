@@ -7,7 +7,8 @@ from flask import Flask
 from flask import render_template
 from flask import request, Response
 from functools import wraps
-from app import app, defaults, db
+from app import app, defaults, db, models
+from models import *
 
 #auth stuff
 def check_auth(username, password):
