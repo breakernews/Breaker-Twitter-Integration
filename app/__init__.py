@@ -27,8 +27,10 @@ from ParallelSBTree import ParallelSBTree
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_json import FlaskJSON, JsonError, json_response, as_json 
 
 app = Flask(__name__)
+json = FlaskJSON(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
