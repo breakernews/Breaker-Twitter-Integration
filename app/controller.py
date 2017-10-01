@@ -142,15 +142,15 @@ def signal_post_handler(signum, stack):
      twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
 
 def reload():
-	global twitter_handles
-	global handles_in_a_tree
-	global twitter_api
-	handle_list = Handles.query.all()
-	print handle_list
-	for i in range(len(handle_list)):
-		twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
-	print twitter_handles
-	handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
+    global twitter_handles
+    global handles_in_a_tree
+    global twitter_api
+    handle_list = Handles.query.all()
+    print handle_list
+    for i in range(len(handle_list)):
+        twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
+    print twitter_handles
+    handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
     signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
     # attach post to  signal.SIGALARM
     signal.signal(signal.SIGALRM, signal_post_handler)
