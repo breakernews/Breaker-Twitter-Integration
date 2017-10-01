@@ -151,6 +151,9 @@ def reload():
 		twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
 	print twitter_handles
 	handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
+    signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
+    # attach post to  signal.SIGALARM
+    signal.signal(signal.SIGALRM, signal_post_handler)
 	return False
 
 # account configuration
@@ -180,8 +183,3 @@ reddit_api = setup_reddit_api(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_PAS
 reload()
 
 twitter_posts.shared = reddit_api
-handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
-
-signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
-# attach post to  signal.SIGALARM
-signal.signal(signal.SIGALRM, signal_post_handler)
