@@ -198,7 +198,7 @@ print handle_list
 # for i in range(0, len(handle_list)):    # as dicionary
 #   twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
 
-for i in range(len(handle_list):
+for i in range(len(handle_list)):
 	twitter_handles[str(handle_list[i]['tweet_handle'])] = {'tweet_handle': str(handle_list[i]['tweet_handle']), 'tweet_name': handle_list[i]['tweet_name'], 'tweet_max_id': handle_list[i]['tweet_max_id'] }
 print twitter_handles
 
