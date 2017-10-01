@@ -52,6 +52,3 @@ def save_json():
 		db.session.add(Handles(tweet_handle=_h['tweet_handle'], tweet_name=_h['tweet_name'], tweet_max_id=_h['tweet_max_id']))
 	db.session.commit()
 	return "Saved!"
-
-
-t = "[{tweet_max_id: 'None', tweet_name: 'business acc', tweet_handle: 'business'}]"

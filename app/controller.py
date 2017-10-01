@@ -146,19 +146,6 @@ def signal_get_handler(twitter_api, handles_in_a_tree, interval):
      handles_in_a_tree.foreach(get_tweet, handles_in_a_tree.psbt._root)
      Timer(interval, signal_get_handler, args=[twitter_api, handles_in_a_tree, interval]).start()
 
-# def load_twitter_handles(src):
-# 	global defaults
-# 	global handle_list_key
-
-# 	twitter_handles = {}
-# 	with open(defaults) as twitter_handles_src:
-# 		t_handles_json_root = json.load(twitter_handles_src)
-# 		handle_list = t_handles_json_root[handle_list_key]
-# 		handle = [item['tweet_handle'] for item in handle_list]
-# 		# convert to dictionary to pass to ParallelSBTree
-# 		for i in range(0, len(handle_list)):    # as dicionary
-# 			twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
-
 #
 # attached to SIGALRM to get called
 #
@@ -204,14 +191,16 @@ twitter_handles = {}
 from models import Handles
 handle_list = Handles.query.all()
 print handle_list
-handle = [item['tweet_handle'] for item in handle_list]
-print "handle_list=" + str(handle_list)
-print "handle = " + str(handle)
-# convert to dictionary to pass to ParallelSBTree
-for i in range(0, len(handle_list)):    # as dicionary
-  twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
+# handle = [item['tweet_handle'] for item in handle_list]
+# print "handle_list=" + str(handle_list)
+# print "handle = " + str(handle)
+# # convert to dictionary to pass to ParallelSBTree
+# for i in range(0, len(handle_list)):    # as dicionary
+#   twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
 
-
+for item in handle_list:
+	twitter_handles[str(item['tweet_handle'])] = {'tweet_handle': str(item['tweet_handle']), 'tweet_name': item['tweet_name'], 'tweet_max_id': item['tweet_max_id'] }
+print twitter_handles
 
 twitter_api = setup_twitter_api(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_KEY, username, password)
 reddit_api = setup_reddit_api(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_PASSWORD, REDDIT_USER_AGENT, REDDIT_USERNAME)
