@@ -2,7 +2,7 @@
 
 from flask import Flask
 from functools import wraps
-from app import app, db, defaults
+from app import app, db
 
 class Tweet(db.Model):
 

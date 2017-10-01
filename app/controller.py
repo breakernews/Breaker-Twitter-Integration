@@ -22,7 +22,6 @@ from models import *
 
 twitter_posts = ParallelSBTree({})
 handles_in_a_tree = ParallelSBTree({})
-defaults = "./app/twitter_handles.json"
 configuration  = "./app/configure.json"
 
 handle_list_key = ""
@@ -147,18 +146,18 @@ def signal_get_handler(twitter_api, handles_in_a_tree, interval):
      handles_in_a_tree.foreach(get_tweet, handles_in_a_tree.psbt._root)
      Timer(interval, signal_get_handler, args=[twitter_api, handles_in_a_tree, interval]).start()
 
-def load_twitter_handles(src):
-	global defaults
-	global handle_list_key
+# def load_twitter_handles(src):
+# 	global defaults
+# 	global handle_list_key
 
-	twitter_handles = {}
-	with open(defaults) as twitter_handles_src:
-		t_handles_json_root = json.load(twitter_handles_src)
-		handle_list = t_handles_json_root[handle_list_key]
-		handle = [item['tweet_handle'] for item in handle_list]
-		# convert to dictionary to pass to ParallelSBTree
-		for i in range(0, len(handle_list)):    # as dicionary
-			twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
+# 	twitter_handles = {}
+# 	with open(defaults) as twitter_handles_src:
+# 		t_handles_json_root = json.load(twitter_handles_src)
+# 		handle_list = t_handles_json_root[handle_list_key]
+# 		handle = [item['tweet_handle'] for item in handle_list]
+# 		# convert to dictionary to pass to ParallelSBTree
+# 		for i in range(0, len(handle_list)):    # as dicionary
+# 			twitter_handles[str(handle[i])] = {'tweet_handle':str(handle[i]), "name": handle_list[i]['tweet_name'], "max_id" : handle_list[i]['tweet_max_id']}
 
 #
 # attached to SIGALRM to get called
