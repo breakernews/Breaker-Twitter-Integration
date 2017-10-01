@@ -31,3 +31,6 @@ class Handles(db.Model):
 
 	def __repr__(self):
 		return self.tweet_name + " | " + self.tweet_handle
+
+	def __getitem__(self):
+		return {tweet_name: self.tweet_name, tweet_handle: self.tweet_handle, tweet_max_id: self.tweet_max_id}
