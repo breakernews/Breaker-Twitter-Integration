@@ -88,13 +88,17 @@ def get_tweet(twitter_api, account):
     recent_user_tweet = twitter_api.user_timeline(screen_name = str(account['tweet_handle']) ,count=1)[0]
     # print recent_user_tweet
     print account
-    print "tweet_id:", recent_user_tweet.id,  "user_id:", str(account['tweet_max_id'])
+    print "tweet_id:", recent_user_tweet.id,  "max_tweet_id:", str(account['tweet_max_id'])
     if recent_user_tweet.id > int( str(account['tweet_max_id']) ):
         tweet_url = twitter_url + str(account['tweet_handle']) + "/status/"  + str(recent_user_tweet.id)
         # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['tweet_handle'])), { "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text})
         # temporary turn it off
         #twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
         handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
+        for item in Handles.query.all():
+        	if item.tweet_handle == account['tweet_handle']:
+        		item.tweet_max_id = recent_user_tweet.id
+        		db.session.commit()
         # print twitter_handles
         signal.alarm(10)   # send signal to process tweet 10 seconds later
 
