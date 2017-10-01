@@ -29,7 +29,7 @@ subreddit_str = ""
 reddit_url = "https://reddit.com/"
 twitter_url = "https://twitter.com/"
 
-GET_INTERVAL = 60  # 5 minutes avoid choosing too low of number - RateLimitError
+GET_INTERVAL = 20  # 5 minutes avoid choosing too low of number - RateLimitError
 UTF_8 = 'utf-8'
 
 
