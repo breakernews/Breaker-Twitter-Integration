@@ -135,6 +135,17 @@ def signal_get_handler(twitter_api, handles_in_a_tree, interval):
 def signal_post_handler(signum, stack):
      twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
 
+def reload():
+	global twitter_handles
+	global handles_in_a_tree
+	handle_list = Handles.query.all()
+	print handle_list
+	for i in range(len(handle_list)):
+		twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
+	print twitter_handles
+	handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
+	return False
+
 # account configuration
 configure_src = open(configuration)
 # twitter creds
@@ -156,11 +167,7 @@ subreddit_str = configure_root["SUBREDDIT"]
 
 #load twitter handles from db
 twitter_handles = {}
-handle_list = Handles.query.all()
-print handle_list
-for i in range(len(handle_list)):
-	twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
-print twitter_handles
+reload()
 
 twitter_api = setup_twitter_api(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_KEY, username, password)
 reddit_api = setup_reddit_api(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_PASSWORD, REDDIT_USER_AGENT, REDDIT_USERNAME)

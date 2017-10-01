@@ -8,6 +8,7 @@ from flask_json import FlaskJSON, JsonError, json_response, as_json
 from functools import wraps
 from app import app, db, models
 from models import *
+from controller import reload
 
 #auth stuff
 def check_auth(username, password):
@@ -51,4 +52,5 @@ def save_json():
 	for _h in h:
 		db.session.add(Handles(tweet_handle=_h['tweet_handle'], tweet_name=_h['tweet_name'], tweet_max_id=_h['tweet_max_id']))
 	db.session.commit()
+	reload()
 	return "Saved!"
