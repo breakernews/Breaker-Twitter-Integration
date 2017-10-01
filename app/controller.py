@@ -92,8 +92,8 @@ def get_tweet(twitter_api, account):
     if recent_user_tweet.id > int( str(account['tweet_max_id']) ):
         tweet_url = twitter_url + str(account['tweet_handle']) + "/status/"  + str(recent_user_tweet.id)
         # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['tweet_handle'])), { "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text})
-        # temporary turn it off
-        #twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
+        handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
+        twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
         for item in Handles.query.all():
         	if item.tweet_handle == account['tweet_handle']:
         		print "updating handle ", item.tweet_handle
@@ -101,7 +101,6 @@ def get_tweet(twitter_api, account):
         		print "new max_id value: ", str(recent_user_tweet.id)
         		item.tweet_max_id = str(recent_user_tweet.id)
         		db.session.commit()
-        handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
         # print twitter_handles
         signal.alarm(10)   # send signal to process tweet 10 seconds later
 
@@ -166,7 +165,6 @@ REDDIT_USERNAME = configure_root["REDDIT_USERNAME"]
 handle_list_key = configure_root["HANDLE_LIST_KEY"]
 subreddit_str = configure_root["SUBREDDIT"]
 
-#load twitter handles from db
 twitter_handles = {}
 
 twitter_api = setup_twitter_api(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_KEY, username, password)
