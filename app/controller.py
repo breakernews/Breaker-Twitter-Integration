@@ -97,7 +97,7 @@ def get_tweet(twitter_api, account):
         handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
         for item in Handles.query.all():
         	if item.tweet_handle == account['tweet_handle']:
-        		item.tweet_max_id = recent_user_tweet.id
+        		item.tweet_max_id = str(recent_user_tweet.id)
         		db.session.commit()
         # print twitter_handles
         signal.alarm(10)   # send signal to process tweet 10 seconds later
@@ -156,7 +156,7 @@ twitter_handles = {}
 handle_list = Handles.query.all()
 print handle_list
 for i in range(len(handle_list)):
-	twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': handle_list[i].tweet_max_id }
+	twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
 print twitter_handles
 
 twitter_api = setup_twitter_api(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_KEY, username, password)
