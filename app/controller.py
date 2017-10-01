@@ -5,7 +5,7 @@ import sys
 import json
 import string
 import signal
-from threading import Timer
+from threading import Timer, RLock
 
 import praw
 import tweepy
@@ -32,7 +32,7 @@ twitter_url = "https://twitter.com/"
 GET_INTERVAL = 20  # 5 minutes avoid choosing too low of number - RateLimitError
 UTF_8 = 'utf-8'
 _timer = None
-# lock = threading.Lock()
+lock = threading.RLock()
 
 #
 # write to json file in file_src
@@ -90,6 +90,7 @@ def get_tweet(twitter_api, account):
     # print recent_user_tweet
     print account
     print "tweet_id:", recent_user_tweet.id,  "max_tweet_id:", str(account['tweet_max_id'])
+    lock.acquire()
     if recent_user_tweet.id > int(str(account['tweet_max_id']) ):
         tweet_url = twitter_url + str(account['tweet_handle']) + "/status/"  + str(recent_user_tweet.id)
         # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['tweet_handle'])), { "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text})
@@ -105,6 +106,7 @@ def get_tweet(twitter_api, account):
                     db.session.commit()
         # print twitter_handles
         signal.alarm(10)   # send signal to process tweet 10 seconds later
+    lock.release()
 
 #
 # post tweet to subreddit
