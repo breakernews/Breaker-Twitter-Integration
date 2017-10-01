@@ -109,7 +109,7 @@ def tweet_exists(tweet_id):
 #  stores new tweet in a storage
 #
 def store_tweet(tweet_id):
-    tw = Tweet(str(tweet_id))
+    tw = Tweet(tweet_id=str(tweet_id))
     db.session.add(tw)
     db.session.commit()
     return True
