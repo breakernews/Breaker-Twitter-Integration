@@ -49,8 +49,8 @@ def index():
 @app.route("/save", methods=['POST'])
 @requires_auth
 def save_json():
-	# print request.get_json()
-	h = json.loads(request.get_json())
+	temp = request.get_json()
+	h = json.loads(temp)
 	for _h in h:
 		db.session.add(Handles(tweet_handle=_h['tweet_handle'], tweet_name=_h['tweet_name'], tweet_max_id=_h['tweet_max_id']))
 	db.session.commit()
