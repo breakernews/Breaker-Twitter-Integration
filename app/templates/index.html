@@ -26,12 +26,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function() {
+
+		var remover = function() {
+			console.log(this);
+		}
+
 		$('#add').click(function() {
 			$('#handles > tbody:last-child').append('<tr class="item"><td><input class="tweet_handle" type="text" value=""></td><td><input class="tweet_name" type="text" value=""</td><td><input class="tweet_max_id" type="text" value=""</td><td><a href="#" class="remove">Remove</a></td></tr>');
+			$('.remove').click(remover)
 		})
-		$('.remove').click(function() {
-			console.log(this);
-		})
+		$('.remove').click(remover)
 	})
 </script>
 </body>
