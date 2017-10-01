@@ -50,6 +50,7 @@ def index():
 @requires_auth
 def save_json():
 	temp = request.get_json()
+	print temp
 	h = json.loads(temp)
 	for _h in h:
 		db.session.add(Handles(tweet_handle=_h['tweet_handle'], tweet_name=_h['tweet_name'], tweet_max_id=_h['tweet_max_id']))
