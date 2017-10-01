@@ -219,6 +219,7 @@ twitter_handles = {}
 
 from models import Handles
 handle_list = Handles.query.all()
+print handle_list
 handle = [item['tweet_handle'] for item in handle_list]
 print "handle_list=" + str(handle_list)
 print "handle = " + str(handle)
