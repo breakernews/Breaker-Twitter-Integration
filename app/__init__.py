@@ -240,4 +240,4 @@ signal.signal(signal.SIGALRM, signal_post_handler)
 # web interface
 app.wsgi_app = ProxyFix(app.wsgi_app)
 from . import views, models
-from models import *
+# from models import *
