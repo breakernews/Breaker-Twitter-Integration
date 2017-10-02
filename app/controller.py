@@ -143,6 +143,7 @@ def signal_get_handler(handles_in_a_tree, interval):
     global twitter_api
     # handles_in_a_tree.foreach(get_tweet, handles_in_a_tree.psbt._root)
     for item in handles_in_a_tree:
+    	print "calling get_tweet with this account: ", item
         get_tweet(twitter_api, item)
     if _timer == None:
         _timer = Timer(interval, signal_get_handler, args=[handles_in_a_tree, interval]).start()
