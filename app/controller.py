@@ -5,7 +5,7 @@ import sys
 import json
 import string
 import signal
-from threading import Timer, RLock
+from threading import Timer, Lock
 
 import praw
 import tweepy
@@ -32,7 +32,7 @@ twitter_url = "https://twitter.com/"
 GET_INTERVAL = 20  # 20 seconds to not let heroku's process manager kill our thread
 UTF_8 = 'utf-8'
 _timer = None
-lock = threading.Lock()
+lock = Lock()
 
 #
 # write to json file in file_src
