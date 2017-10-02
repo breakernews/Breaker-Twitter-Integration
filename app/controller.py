@@ -171,7 +171,7 @@ def reload():
         'tweet_name': handle_list[i].tweet_name, 
         'tweet_max_id': long(handle_list[i].tweet_max_id) }
     print twitter_handles
-    handles_in_a_tree = {twitter_handles}
+    handles_in_a_tree = twitter_handles
     signal_get_handler(handles_in_a_tree, GET_INTERVAL)
     # attach post to  signal.SIGALARM
     signal.signal(signal.SIGALRM, signal_post_handler)
