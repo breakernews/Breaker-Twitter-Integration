@@ -33,7 +33,7 @@ subreddit_str = ""
 reddit_url = "https://reddit.com/"
 twitter_url = "https://twitter.com/"
 
-GET_INTERVAL = 40  # 40 seconds to not let heroku's process manager kill our thread
+GET_INTERVAL = 120  # 40 seconds resulting into rate Limit error
 UTF_8 = 'utf-8'
 _timer = None
 lock = Lock()
@@ -89,14 +89,14 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
 #
 def get_tweet(twitter_api, account):
     global twitter_handles, twitter_posts
-    print "accout: ", account
+    # print "accout: ", account
     recent_user_tweet = twitter_api.user_timeline(screen_name = account ,count=1)
     if len(recent_user_tweet) > 0:
         recent_user_tweet = recent_user_tweet[0]
     else:
         return None
     # print recent_user_tweet
-    print account
+    # print account
     print "tweet_id:", recent_user_tweet.id,  "max_tweet_id:", str(handles_in_a_tree[account]['tweet_max_id'])
     lock.acquire()
     for item in Handles.query.all():
@@ -143,7 +143,7 @@ def signal_get_handler(handles_in_a_tree, interval):
     global twitter_api
     # handles_in_a_tree.foreach(get_tweet, handles_in_a_tree.psbt._root)
     for item in handles_in_a_tree:
-    	print "calling get_tweet with this account: ", item
+    	# print "calling get_tweet with this account: ", item
         get_tweet(twitter_api, item)
     if _timer == None:
         _timer = Timer(interval, signal_get_handler, args=[handles_in_a_tree, interval]).start()
