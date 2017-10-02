@@ -95,22 +95,22 @@ def get_tweet(twitter_api, account):
     print account
     print "tweet_id:", recent_user_tweet.id,  "max_tweet_id:", str(account['tweet_max_id'])
     lock.acquire()
-    if recent_user_tweet.id > int(str(account['tweet_max_id']) ):
-        tweet_url = twitter_url + str(account['tweet_handle']) + "/status/"  + str(recent_user_tweet.id)
-        # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['tweet_handle'])), { "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text})
-        handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "tweet_name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
-        twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "tweet_name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
-        for item in Handles.query.all():
-            if item.tweet_handle == account['tweet_handle']:
-                #final double check due to thread concurrency, although we did a thread lock...
+    for item in Handles.query.all():
+        if item.tweet_handle == account['tweet_handle']:
+            if recent_user_tweet.id > int(str(account['tweet_max_id']) ):
+                #final double check with db now due to thread concurrency, although we did a thread lock...
                 if recent_user_tweet.id > long(item.tweet_max_id):
+                    tweet_url = twitter_url + str(account['tweet_handle']) + "/status/"  + str(recent_user_tweet.id)
+                    # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['tweet_handle'])), { "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text})
+                    handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "tweet_name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
+                    twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "tweet_name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
                     print "updating handle ", item.tweet_handle
                     print "current max_id value: ", item.tweet_max_id
                     print "new max_id value: ", str(recent_user_tweet.id)
                     item.tweet_max_id = str(recent_user_tweet.id)
                     db.session.commit()
-        # print twitter_handles
-        signal.alarm(10)   # send signal to process tweet 10 seconds later
+                    # print twitter_handles
+                    signal.alarm(10)   # send signal to process tweet 10 seconds later
     lock.release()
 
 #
