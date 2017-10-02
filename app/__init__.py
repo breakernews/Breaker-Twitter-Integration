@@ -16,10 +16,13 @@ from flask_json import FlaskJSON, JsonError, json_response, as_json
 
 app = Flask(__name__)
 FLjson = FlaskJSON(app)
-app.config['SQLALCHEMY_MAX_OVERFLOW'] = 2
+app.config['SQLALCHEMY_MAX_OVERFLOW'] = 0
+app.config['SQLALCHEMY_'] = 0
 app.config['SQLALCHEMY_POOL_TIMEOUT'] = 60 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'],
+                       pool_size=20, max_overflow=0)
 db = SQLAlchemy(app)
 
 # web interface

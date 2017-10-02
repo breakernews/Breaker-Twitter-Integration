@@ -54,3 +54,7 @@ def save_json():
 	db.session.commit()
 	reload()
 	return "Saved!"
+
+@app.route("/robots.txt")
+def robotstxt():
+    return send_from_directory('static', 'robots.txt')
