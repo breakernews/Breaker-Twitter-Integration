@@ -125,12 +125,12 @@ def post_thread(reddit_api, tweet):
     print "twitter posts: ", twitter_posts
     lock.acquire()
     post = "[{th}] {tp}".format(
-                        th = str(tweet['tweet_name']),
-                        tp = str(tweet['content']) )
+                        th = str(twitter_posts[tweet]['tweet_name']),
+                        tp = str(twitter_posts[tweet]['content']) )
 
     post_url = tweet['url']
-    print "attempt to submit this: ", post, post_url, tweet['tweet_name'], "\n"
-    twitter_posts.pop(str(tweet['tweet_handle']))
+    print "attempt to submit this: ", post, post_url, twitter_posts[tweet]['tweet_name'], "\n"
+    twitter_posts.pop(tweet)
     reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
     lock.release()
 
