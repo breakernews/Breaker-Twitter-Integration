@@ -101,12 +101,12 @@ def get_tweet(twitter_api, account):
     lock.acquire()
     for item in Handles.query.all():
         if item.tweet_handle == account:
-            if recent_user_tweet.id > int(str(account['tweet_max_id']) ):
+            if recent_user_tweet.id > int(str(handles_in_a_tree[account]['tweet_max_id']) ):
                 #final double check with db now due to thread concurrency, although we did a thread lock...
                 if recent_user_tweet.id > long(item.tweet_max_id):
                     tweet_url = twitter_url + account + "/status/"  + str(recent_user_tweet.id)
-                    handles_in_a_tree[account] = {'tweet_handle':account, "tweet_name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) } # update user in twitter_handles
-                    twitter_posts[account] = { 'tweet_handle' : account, "tweet_name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) }
+                    handles_in_a_tree[account] = {'tweet_handle':account, "tweet_name": str(handles_in_a_tree[account]['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) } # update user in twitter_handles
+                    twitter_posts[account] = { 'tweet_handle' : account, "tweet_name" : str(handles_in_a_tree[account]['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) }
                     print "updating handle ", item.tweet_handle
                     print "current max_id value: ", item.tweet_max_id
                     print "new max_id value: ", str(recent_user_tweet.id)
