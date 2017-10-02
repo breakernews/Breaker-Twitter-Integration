@@ -21,8 +21,8 @@ app.config['SQLALCHEMY_'] = 0
 app.config['SQLALCHEMY_POOL_TIMEOUT'] = 60 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'],
-                       pool_size=20, max_overflow=0)
+# engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'],
+#                        pool_size=20, max_overflow=0)
 db = SQLAlchemy(app)
 
 # web interface
