@@ -137,7 +137,7 @@ def post_thread(reddit_api, tweet):
 #
 # calls the handler get_tweet every interval
 #
-def signal_get_handler(twitter_api, handles_in_a_tree, interval):
+def signal_get_handler(handles_in_a_tree, interval):
     # check twitter every interval
     global _timer
     global twitter_api
@@ -145,10 +145,10 @@ def signal_get_handler(twitter_api, handles_in_a_tree, interval):
     for item in handles_in_a_tree:
         get_tweet(twitter_api, item)
     if _timer == None:
-        _timer = Timer(interval, signal_get_handler, args=[twitter_api, handles_in_a_tree, interval]).start()
+        _timer = Timer(interval, signal_get_handler, args=[handles_in_a_tree, interval]).start()
     else:
         _time.stop()
-        _timer = Timer(interval, signal_get_handler, args=[twitter_api, handles_in_a_tree, interval]).start()
+        _timer = Timer(interval, signal_get_handler, args=[handles_in_a_tree, interval]).start()
 
 #
 # attached to SIGALRM to get called
@@ -172,7 +172,7 @@ def reload():
         'tweet_max_id': long(handle_list[i].tweet_max_id) }
     print twitter_handles
     handles_in_a_tree = {twitter_handles}
-    signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
+    signal_get_handler(handles_in_a_tree, GET_INTERVAL)
     # attach post to  signal.SIGALARM
     signal.signal(signal.SIGALRM, signal_post_handler)
     return False
