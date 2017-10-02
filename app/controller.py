@@ -120,6 +120,7 @@ def post_thread(reddit_api, tweet):
     global twitter_posts
     print "HIT"
     print "tweet ", tweet
+    lock.acquire()
     post = "[{th}] {tp}".format(
                         th = str(tweet['tweet_name']),
                         tp = str(tweet['content']) )
@@ -128,7 +129,7 @@ def post_thread(reddit_api, tweet):
     print "attempt to submit this: ", post, post_url, tweet['tweet_name'], "\n"
     twitter_posts.remove(str(tweet['tweet_handle']))
     reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
-
+    lock.release()
 
 #
 # calls the handler get_tweet every interval
