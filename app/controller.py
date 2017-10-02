@@ -33,7 +33,7 @@ subreddit_str = ""
 reddit_url = "https://reddit.com/"
 twitter_url = "https://twitter.com/"
 
-GET_INTERVAL = 20  # 20 seconds to not let heroku's process manager kill our thread
+GET_INTERVAL = 40  # 40 seconds to not let heroku's process manager kill our thread
 UTF_8 = 'utf-8'
 _timer = None
 lock = Lock()
@@ -128,7 +128,7 @@ def post_thread(reddit_api, tweet):
                         th = str(twitter_posts[tweet]['tweet_name']),
                         tp = str(twitter_posts[tweet]['content']) )
 
-    post_url = tweet['url']
+    post_url = twitter_posts[tweet]['url']
     print "attempt to submit this: ", post, post_url, twitter_posts[tweet]['tweet_name'], "\n"
     twitter_posts.pop(tweet)
     reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
