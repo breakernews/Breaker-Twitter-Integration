@@ -167,7 +167,9 @@ def reload():
     print handle_list
     twitter_handles = {}
     for i in range(len(handle_list)):
-        twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
+        twitter_handles[handle_list[i].tweet_handle] = {'tweet_handle': str(handle_list[i].tweet_handle), 
+        'tweet_name': handle_list[i].tweet_name, 
+        'tweet_max_id': long(handle_list[i].tweet_max_id) }
     print twitter_handles
     handles_in_a_tree = {twitter_handles}
     signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
