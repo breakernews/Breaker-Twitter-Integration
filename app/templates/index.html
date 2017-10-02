@@ -63,7 +63,7 @@
 			  _Handles[index] = {};
 			  $cells.each(function(cellIndex) {
 			  	if (this.value == "") {
-			  		alert ("Fill all the values!");
+			  		if (ok) alert ("Fill all the values!");
 			  		ok = false;
 			  	}
 			    _Handles[index][this.name] = this.value;
