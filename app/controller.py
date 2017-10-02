@@ -156,11 +156,11 @@ def signal_get_handler(handles_in_a_tree, interval):
 #
 def signal_post_handler(signum, stack):
 	# twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
-	global reddit_api
+	global reddit_api, twitter_posts
 	lock.acquire()
 	for item in twitter_posts:
 		post_thread(reddit_api, item)
-	# twitter_posts.filter(lambda x: if x['posted']==True: del x)
+	new_twitter_posts.filter(lambda x:  not x['posted']==True)
 	twitter_posts = {}
 	lock.release()
 
