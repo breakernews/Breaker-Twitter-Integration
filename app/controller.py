@@ -32,7 +32,7 @@ twitter_url = "https://twitter.com/"
 GET_INTERVAL = 20  # 20 seconds to not let heroku's process manager kill our thread
 UTF_8 = 'utf-8'
 _timer = None
-lock = Lock()
+lock = threading.Lock()
 
 #
 # write to json file in file_src
