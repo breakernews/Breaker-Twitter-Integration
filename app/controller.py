@@ -32,7 +32,7 @@ twitter_url = "https://twitter.com/"
 GET_INTERVAL = 20  # 20 seconds to not let heroku's process manager kill our thread
 UTF_8 = 'utf-8'
 _timer = None
-lock = RLock()
+lock = Lock()
 
 #
 # write to json file in file_src
@@ -98,6 +98,7 @@ def get_tweet(twitter_api, account):
         twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "tweet_name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
         for item in Handles.query.all():
             if item.tweet_handle == account['tweet_handle']:
+                #final double check due to thread concurrency, although we did a thread lock...
                 if recent_user_tweet.id > int(str(account['tweet_max_id']) ):
                     print "updating handle ", item.tweet_handle
                     print "current max_id value: ", item.tweet_max_id

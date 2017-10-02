@@ -4,24 +4,26 @@
 	<title>Twitter2Reddit Bot Setup</title>
 </head>
 <body>
-<table id="handles">
-	<tbody>
-		<tr>
-			<th>handle</th>
-			<th>name</th>
-			<th>max_id</th>
-			<th>Remove</th>
-		</tr>
-		{% for item in handles %}
-		<tr class="item">
-			<td><input class="tweet_handle" type="text" value="{{ item.tweet_handle }}" name="tweet_handle" required></td>
-			<td><input class="tweet_name" type="text" value="{{ item.tweet_name }}" name="tweet_name" required></td>
-			<td><input class="tweet_max_id" type="text" value="{{ item.tweet_max_id }}" name="tweet_max_id" required></td>
-			<td><a href="#" class="remove">Remove</a></td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+	<form id="mainForm">
+		<table id="handles">
+			<tbody>
+				<tr>
+					<th>handle</th>
+					<th>name</th>
+					<th>max_id</th>
+					<th>Remove</th>
+				</tr>
+				{% for item in handles %}
+				<tr class="item">
+					<td><input class="tweet_handle" type="text" value="{{ item.tweet_handle }}" name="tweet_handle" required></td>
+					<td><input class="tweet_name" type="text" value="{{ item.tweet_name }}" name="tweet_name" required></td>
+					<td><input class="tweet_max_id" type="text" value="{{ item.tweet_max_id }}" name="tweet_max_id" required></td>
+					<td><a href="#" class="remove">Remove</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</form>
 <a href="#" id="add">Add new handle</a><br>
 <a href="#" id="save">Save data</a><br>
 <p style="font-weight:strong">Legend: </p>
@@ -54,6 +56,8 @@
 		$('.remove').click(remover);
 		$('#save').click(function (e) {
 			e.preventDefault();
+			x = $("#mainForm").validate();
+			alert(x);
 			var _Handles = [];
 			var $rows = $("tbody tr.item").each(function(index) {
 			  $cells = $(this).find("td input");
