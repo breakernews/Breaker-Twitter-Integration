@@ -24,7 +24,7 @@ from models import *
 # twitter_posts = ParallelSBTree({})
 # handles_in_a_tree = ParallelSBTree({})
 twitter_posts = {}
-handles_in_a_tree = AVLTree({})
+handles_in_a_tree = {}
 
 configuration  = "./app/configure.json"
 
@@ -169,7 +169,7 @@ def reload():
     for i in range(len(handle_list)):
         twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
     print twitter_handles
-    handles_in_a_tree = AVLTree(twitter_handles)
+    handles_in_a_tree = {twitter_handles}
     signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
     # attach post to  signal.SIGALARM
     signal.signal(signal.SIGALRM, signal_post_handler)
