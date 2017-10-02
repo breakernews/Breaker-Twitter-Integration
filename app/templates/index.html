@@ -14,9 +14,9 @@
 		</tr>
 		{% for item in handles %}
 		<tr class="item">
-			<td><input class="tweet_handle" type="text" value="{{ item.tweet_handle }}" name="tweet_handle"></td>
-			<td><input class="tweet_name" type="text" value="{{ item.tweet_name }}" name="tweet_name"></td>
-			<td><input class="tweet_max_id" type="text" value="{{ item.tweet_max_id }}" name="tweet_max_id"></td>
+			<td><input class="tweet_handle" type="text" value="{{ item.tweet_handle }}" name="tweet_handle" required></td>
+			<td><input class="tweet_name" type="text" value="{{ item.tweet_name }}" name="tweet_name" required></td>
+			<td><input class="tweet_max_id" type="text" value="{{ item.tweet_max_id }}" name="tweet_max_id" required></td>
 			<td><a href="#" class="remove">Remove</a></td>
 		</tr>
 		{% endfor %}
@@ -27,7 +27,7 @@
 <p style="font-weight:strong">Legend: </p>
 <p>
 	handle - is a twitter acc<br>
-	name - is a name to be displayed in the start if the post<br>
+	name - is a name to be displayed in the start of the reddit post<br>
 	max_id - is id of last tweet posted to reddit
 </p>
 
@@ -43,9 +43,9 @@
 		$('#add').click(function() {
 			$('#handles > tbody:last-child').append(
 				'<tr class="item">'+
-				'<td><input class="tweet_handle" type="text" value="" name="tweet_handle"></td>'+
-				'<td><input class="tweet_name" type="text" value="" name="tweet_name"></td>'+
-				'<td><input class="tweet_max_id" type="text" value="0" name="tweet_max_id"></td>'+
+				'<td><input class="tweet_handle" type="text" value="" name="tweet_handle" required></td>'+
+				'<td><input class="tweet_name" type="text" value="" name="tweet_name" required></td>'+
+				'<td><input class="tweet_max_id" type="text" value="0" name="tweet_max_id" required></td>'+
 				'<td><a href="#" class="remove">Remove</a></td>'+
 				'</tr>');
 

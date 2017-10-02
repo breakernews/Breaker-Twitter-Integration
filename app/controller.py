@@ -29,7 +29,7 @@ subreddit_str = ""
 reddit_url = "https://reddit.com/"
 twitter_url = "https://twitter.com/"
 
-GET_INTERVAL = 20  # 5 minutes avoid choosing too low of number - RateLimitError
+GET_INTERVAL = 20  # 20 seconds to not let heroku's process manager kill our thread
 UTF_8 = 'utf-8'
 _timer = None
 lock = RLock()
