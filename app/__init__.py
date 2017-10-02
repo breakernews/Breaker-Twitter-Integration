@@ -22,4 +22,4 @@ db = SQLAlchemy(app)
 
 # web interface
 app.wsgi_app = ProxyFix(app.wsgi_app)
-from . import views, models, controller
+from . import views, models#, controller
