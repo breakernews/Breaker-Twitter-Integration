@@ -86,7 +86,11 @@ def setup_reddit_api(client_id, client_secret, password, user_agent, username):
 def get_tweet(twitter_api, account):
     global twitter_handles, twitter_posts
 
-    recent_user_tweet = twitter_api.user_timeline(screen_name = str(account['tweet_handle']) ,count=1)[0]
+    recent_user_tweet = twitter_api.user_timeline(screen_name = str(account['tweet_handle']) ,count=1)
+    if len(recent_user_tweet) > 0:
+        recent_user_tweet = recent_user_tweet[0]
+    else:
+        return None
     # print recent_user_tweet
     print account
     print "tweet_id:", recent_user_tweet.id,  "max_tweet_id:", str(account['tweet_max_id'])
