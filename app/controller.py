@@ -12,7 +12,8 @@ import tweepy
 
 import error
 from get_access_token import get_access_token
-from ParallelSBTree import ParallelSBTree
+# from ParallelSBTree import ParallelSBTree
+from bintrees import AVLTree
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -20,8 +21,11 @@ from flask_json import FlaskJSON, JsonError, json_response, as_json
 
 from models import *
 
-twitter_posts = ParallelSBTree({})
-handles_in_a_tree = ParallelSBTree({})
+# twitter_posts = ParallelSBTree({})
+# handles_in_a_tree = ParallelSBTree({})
+twitter_posts = {}
+handles_in_a_tree = AVLTree({})
+
 configuration  = "./app/configure.json"
 
 handle_list_key = ""
@@ -101,9 +105,8 @@ def get_tweet(twitter_api, account):
                 #final double check with db now due to thread concurrency, although we did a thread lock...
                 if recent_user_tweet.id > long(item.tweet_max_id):
                     tweet_url = twitter_url + str(account['tweet_handle']) + "/status/"  + str(recent_user_tweet.id)
-                    # tweet_node  = twitter_posts.new_node(twitter_posts, str(account['tweet_handle'])), { "name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text})
-                    handles_in_a_tree.update_node(str(account['tweet_handle']), {'tweet_handle':str(account['tweet_handle']), "tweet_name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
-                    twitter_posts.insert( str(account['tweet_handle']), { 'tweet_handle' : str(account['tweet_handle']), "tweet_name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
+                    handles_in_a_tree[str(account['tweet_handle'])] = {'tweet_handle':str(account['tweet_handle']), "tweet_name": str(account['tweet_name']), "tweet_max_id":int(recent_user_tweet.id) }) # update user in twitter_handles
+                    twitter_posts[str(account['tweet_handle'])] = { 'tweet_handle' : str(account['tweet_handle']), "tweet_name" : str(account['tweet_name']), "url":tweet_url, "content" : recent_user_tweet.text.encode(UTF_8) })
                     print "updating handle ", item.tweet_handle
                     print "current max_id value: ", item.tweet_max_id
                     print "new max_id value: ", str(recent_user_tweet.id)
@@ -127,7 +130,7 @@ def post_thread(reddit_api, tweet):
 
     post_url = tweet['url']
     print "attempt to submit this: ", post, post_url, tweet['tweet_name'], "\n"
-    twitter_posts.remove(str(tweet['tweet_handle']))
+    twitter_posts.pop(str(tweet['tweet_handle']))
     reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
     lock.release()
 
@@ -137,7 +140,10 @@ def post_thread(reddit_api, tweet):
 def signal_get_handler(twitter_api, handles_in_a_tree, interval):
     # check twitter every interval
     global _timer
-    handles_in_a_tree.foreach(get_tweet, handles_in_a_tree.psbt._root)
+    global twitter_api
+    # handles_in_a_tree.foreach(get_tweet, handles_in_a_tree.psbt._root)
+    for item in handles_in_a_tree:
+        get_tweet(twitter_api, item)
     if _timer == None:
         _timer = Timer(interval, signal_get_handler, args=[twitter_api, handles_in_a_tree, interval]).start()
     else:
@@ -148,7 +154,10 @@ def signal_get_handler(twitter_api, handles_in_a_tree, interval):
 # attached to SIGALRM to get called
 #
 def signal_post_handler(signum, stack):
-     twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
+     # twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
+     global reddit_api
+     for item in twitter_posts:
+        post_thread(reddit_api, item)
 
 def reload():
     global twitter_handles
@@ -160,7 +169,7 @@ def reload():
     for i in range(len(handle_list)):
         twitter_handles[str(handle_list[i].tweet_handle)] = {'tweet_handle': str(handle_list[i].tweet_handle), 'tweet_name': handle_list[i].tweet_name, 'tweet_max_id': long(handle_list[i].tweet_max_id) }
     print twitter_handles
-    handles_in_a_tree = ParallelSBTree(twitter_handles, shared=twitter_api)
+    handles_in_a_tree = AVLTree(twitter_handles)
     signal_get_handler(twitter_api, handles_in_a_tree, GET_INTERVAL)
     # attach post to  signal.SIGALARM
     signal.signal(signal.SIGALRM, signal_post_handler)
@@ -192,4 +201,4 @@ reddit_api = setup_reddit_api(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_PAS
 
 reload()
 
-twitter_posts.shared = reddit_api
+# twitter_posts.shared = reddit_api

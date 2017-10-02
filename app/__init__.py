@@ -8,7 +8,6 @@ from werkzeug.contrib.fixers import ProxyFix
 
 import error
 from get_access_token import get_access_token
-from ParallelSBTree import ParallelSBTree
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
