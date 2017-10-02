@@ -122,7 +122,7 @@ def get_tweet(twitter_api, account):
 def post_thread(reddit_api, tweet):
     global twitter_posts
     print "HIT"
-    print "tweet ", tweet
+    print "twitter posts: ", twitter_posts
     lock.acquire()
     post = "[{th}] {tp}".format(
                         th = str(tweet['tweet_name']),
