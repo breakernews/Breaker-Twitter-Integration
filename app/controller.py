@@ -103,7 +103,7 @@ def get_tweet(twitter_api, account):
         for item in Handles.query.all():
             if item.tweet_handle == account['tweet_handle']:
                 #final double check due to thread concurrency, although we did a thread lock...
-                if recent_user_tweet.id > int(str(account['tweet_max_id']) ):
+                if recent_user_tweet.id > long(item.tweet_max_id):
                     print "updating handle ", item.tweet_handle
                     print "current max_id value: ", item.tweet_max_id
                     print "new max_id value: ", str(recent_user_tweet.id)
