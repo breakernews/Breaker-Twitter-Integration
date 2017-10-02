@@ -34,7 +34,6 @@
 </p>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
 <script>
 	$(document).ready(function() {
 
@@ -57,13 +56,15 @@
 		$('.remove').click(remover);
 		$('#save').click(function (e) {
 			e.preventDefault();
-			x = $("#mainForm").validate();
-			alert(x);
 			var _Handles = [];
 			var $rows = $("tbody tr.item").each(function(index) {
 			  $cells = $(this).find("td input");
 			  _Handles[index] = {};
 			  $cells.each(function(cellIndex) {
+			  	if (this.value == "") {
+			  		alert ("Fill all the values!");
+			  		return false;
+			  	}
 			    _Handles[index][this.name] = this.value;
 			  });    
 			});
