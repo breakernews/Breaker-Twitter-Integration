@@ -130,7 +130,7 @@ def post_thread(reddit_api, tweet):
 
     post_url = twitter_posts[tweet]['url']
     print "attempt to submit this: ", post, post_url, twitter_posts[tweet]['tweet_name'], "\n"
-    twitter_posts.pop(tweet)
+    twitter_posts[tweet]['posted'] = True
     reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
     lock.release()
 
@@ -155,10 +155,13 @@ def signal_get_handler(handles_in_a_tree, interval):
 # attached to SIGALRM to get called
 #
 def signal_post_handler(signum, stack):
-     # twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
-     global reddit_api
-     for item in twitter_posts:
-        post_thread(reddit_api, item)
+	# twitter_posts.foreach(post_thread, twitter_posts.psbt._root)
+	global reddit_api
+	lock.acquire()
+	for item in twitter_posts:
+		post_thread(reddit_api, item)
+	twitter_posts.filter(lambda x: if x['posted']==True: del x)
+	lock.release()
 
 def reload():
     global twitter_handles
