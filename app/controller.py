@@ -97,7 +97,7 @@ def get_tweet(twitter_api, account):
         return None
     # print recent_user_tweet
     # print account
-    print "tweet_id:", recent_user_tweet.id,  "max_tweet_id:", str(handles_in_a_tree[account]['tweet_max_id'])
+    print "account: ", account, " tweet_id:", recent_user_tweet.id,  "max_tweet_id:", str(handles_in_a_tree[account]['tweet_max_id'])
     lock.acquire()
     for item in Handles.query.all():
         if item.tweet_handle == account:
@@ -123,7 +123,6 @@ def post_thread(reddit_api, tweet):
     global twitter_posts
     print "HIT"
     print "twitter posts: ", twitter_posts
-    lock.acquire()
     post = "[{th}] {tp}".format(
                         th = str(twitter_posts[tweet]['tweet_name']),
                         tp = str(twitter_posts[tweet]['content']) )
@@ -132,7 +131,6 @@ def post_thread(reddit_api, tweet):
     print "attempt to submit this: ", post, post_url, twitter_posts[tweet]['tweet_name'], "\n"
     twitter_posts[tweet]['posted'] = True
     reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
-    lock.release()
 
 #
 # calls the handler get_tweet every interval
