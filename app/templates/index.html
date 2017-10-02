@@ -57,23 +57,24 @@
 		$('#save').click(function (e) {
 			e.preventDefault();
 			var _Handles = [];
+			var ok = true;
 			var $rows = $("tbody tr.item").each(function(index) {
 			  $cells = $(this).find("td input");
 			  _Handles[index] = {};
 			  $cells.each(function(cellIndex) {
 			  	if (this.value == "") {
 			  		alert ("Fill all the values!");
-			  		return false;
+			  		ok = false;
+			  		break;
 			  	}
 			    _Handles[index][this.name] = this.value;
 			  });    
 			});
-			// Let's put this in the object like you want and convert to JSON (Note: jQuery will also do this for you on the Ajax request)
-			// alert(JSON.stringify(_Handles));​
-			jQuery.ajax({url: "/save", method:"POST", data: JSON.stringify(_Handles), dataType: "json", contentType: "application/json; charset=utf-8"})
-			.done (function (data) {
-					alert(data);
-				});
+			if (ok)
+				jQuery.ajax({url: "/save", method:"POST", data: JSON.stringify(_Handles), dataType: "json", contentType: "application/json; charset=utf-8"})
+				.done (function (data) {
+						alert(data);
+					});
 		})
 
 	})
