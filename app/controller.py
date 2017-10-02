@@ -126,8 +126,8 @@ def post_thread(reddit_api, tweet):
 
     post_url = tweet['url']
     print "attempt to submit this: ", post, post_url, tweet['tweet_name'], "\n"
-    reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
     twitter_posts.remove(str(tweet['tweet_handle']))
+    reddit_api.subreddit(subreddit_str).submit(post, url=post_url), "\n" 
 
 
 #
