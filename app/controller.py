@@ -158,8 +158,7 @@ def signal_post_handler(signum, stack):
 	lock.acquire()
 	for item in twitter_posts:
 		post_thread(reddit_api, item)
-	new_twitter_posts.filter(lambda x:  not x['posted']==True)
-	twitter_posts = {}
+	twitter_posts = twitter_posts.filter(lambda x:  not x['posted']==True)
 	lock.release()
 
 def reload():
