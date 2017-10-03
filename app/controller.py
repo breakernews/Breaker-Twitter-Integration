@@ -12,7 +12,6 @@ import tweepy
 
 import error
 from get_access_token import get_access_token
-# from ParallelSBTree import ParallelSBTree
 from bintrees import AVLTree
 
 from flask import Flask
@@ -21,8 +20,6 @@ from flask_json import FlaskJSON, JsonError, json_response, as_json
 
 from models import *
 
-# twitter_posts = ParallelSBTree({})
-# handles_in_a_tree = ParallelSBTree({})
 twitter_posts = {}
 handles_in_a_tree = {}
 
@@ -162,6 +159,9 @@ def signal_post_handler(signum, stack):
 	twitter_posts = {k: v for k, v in twitter_posts.items() if not v['posted'] == True}
 	lock.release()
 
+#
+# Reload the twitter handles from db
+#
 def reload():
     global twitter_handles
     global handles_in_a_tree
